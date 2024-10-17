@@ -1,23 +1,39 @@
-import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
+import { Button } from '@blueprintjs/core'; 
 
 function App() {
+  const [users,setUsers] =useState([]);
+  useEffect(()=>{
+      fetch('https://jsonplaceholder.typicode.com/users')
+      .then((res)=>res.json())
+      .then((json)=>setUsers(json))
+  },[])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+       <table className='bp4-html-table modifier'>
+          <thead>
+             <th>ID</th>
+             <th>Name</th>
+             <th>Email</th>
+             <th>Website</th>
+             <th>Action</th>
+          </thead>
+          <tbody>
+            {users.map(user =>
+             <tr key={user.id}>
+               <td>{user.id}</td>
+               <td>{user.name}</td>
+               <td>{user.email}</td>
+               <td>{user.website}</td>
+               <td>
+                  <Button>Edit</Button> 
+                  <Button>Delete</Button>
+                </td>
+             </tr>
+            )}
+          </tbody>
+       </table>
     </div>
   );
 }
